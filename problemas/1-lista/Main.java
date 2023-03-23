@@ -191,18 +191,19 @@ public class Main {
        */
 
        public void insertFromString() {
-        Scanner sc = new Scanner(System.in);
-        //System.out.println("Ingrese una cadena de texto separada por espacios:");
-        String input = sc.nextLine();
-          // Creamos un array de strings a partir del input
-        String[] tokens = input.split(" ");
+            try (Scanner sc = new Scanner(System.in)) {
+                //System.out.println("Ingrese una cadena de texto separada por espacios:");
+                String input = sc.nextLine();
+                // Creamos un array de strings a partir del input
+                String[] tokens = input.split(" ");
 
-        // Recorremos las palabras
-        for (String word : tokens) {
-            // Insertamos cada palabra en orden alfabético
-            pushBack((T) word);
+                // Recorremos las palabras
+                for (String word : tokens) {
+                    // Insertamos cada palabra
+                    pushBack((T) word);
+                }
+            }
         }
-    }
   
       /**
        * Clase interna para representar un nodo de la lista enlazada
@@ -253,6 +254,9 @@ public class Main {
               this.next = next;
           }
       }
+
+
+    
   
   }
   
