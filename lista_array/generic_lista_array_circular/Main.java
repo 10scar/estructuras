@@ -112,9 +112,10 @@ public class Main{
         if (size == 0) { // si el arreglo está vacío, no se puede eliminar ningún elemento
             throw new NoSuchElementException();
         }
-        tail = (tail - 1 + capacity) % capacity; // se actualiza el índice del último elemento
+        
         E element = data[tail]; // se obtiene el último elemento
         data[tail] = null; // se elimina la referencia al último elemento para permitir la recolección de basura
+        tail = (tail - 1 + capacity) % capacity; // se actualiza el índice del último elemento
         size--; // se decrementa el tamaño del arreglo
         return element; // se devuelve el último elemento
     }
