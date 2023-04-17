@@ -1,7 +1,8 @@
 import java.util.NoSuchElementException;
 
+//Array circular dinamico
 public class Main{
-    public static  class Array<E> {
+    public static  class Array<E extends Comparable<E>>  {
         private E[] data; // arreglo interno
         private int size; // cantidad de elementos en el arreglo
         private int capacity; // capacidad actual del arreglo
@@ -10,7 +11,7 @@ public class Main{
         
         // Constructor
         public Array(int initialCapacity) {
-            this.data = (E[]) new Object[initialCapacity];
+            this.data = (E[]) new Comparable[initialCapacity];
             this.size = 0;
             this.capacity = initialCapacity;
             this.head = 0;
@@ -30,12 +31,12 @@ public class Main{
         }
         
         // Devuelve el tamaño actual del arreglo
-        public int size() {
+        public int getSize() {
             return size;
         }
         
         // Devuelve la capacidad actual del arreglo
-        public int capacity() {
+        public int getCapacity() {
             return capacity;
         }
 
@@ -92,7 +93,7 @@ public class Main{
             grow();
         }
         if (index == size - 1) { // si se quiere añadir al final, se llama al método add
-            add(element);
+            pushBack(element);
             return;
         }
         int actualIndex = (head + index + 1) % capacity; // se obtiene el índice real del elemento en el arreglo
@@ -157,13 +158,25 @@ public class Main{
         }
         System.out.println("]");
     }
+
+    public void insertInOrder(E elemento) {
+        if (size == capacity) {
+            grow();
+        }
+        int index = binarySearch(elemento, 0, size-1);
+        //el elemento no esta y se agrega.
+        if(index!=-1){            
+            addAfter(index-1, elemento);
+        }
+        
+    }
         
         // Métodos privados
         
         // Aumenta la capacidad del arreglo en un 50%
         private void grow() {
             int newCapacity = capacity + capacity / 2;
-            E[] newData = (E[]) new Object[newCapacity];
+            E[] newData = (E[]) new Comparable[newCapacity];
             for (int i = 0; i < size; i++) {
                 int actualIndex = (head + i) % capacity;
                 newData[i] = data[actualIndex];
@@ -171,7 +184,25 @@ public class Main{
             data = newData;
             capacity = newCapacity;
             head = 0;
-            tail = size - 1;
+            tail = size-1;
+        }
+
+        //devuelve el indice si no encontro el elmento, si lo encontro devuelve -1(no es necesario devolver mid para este problema)
+        private int binarySearch(E elemento, int abajo, int arriba) {
+            if (abajo > arriba) {
+                return abajo;
+            }
+            int mid = (abajo+arriba) / 2; //mitad
+
+            //retorna -1 si encontro el elemento
+            if (data[mid].equals(elemento)) {
+                return -1;
+            }
+            else if (data[mid] == null || elemento.compareTo(data[mid]) <= 0) {
+                return binarySearch(elemento, abajo, mid-1);
+            }else {
+                return binarySearch(elemento, mid+1, arriba);
+            }
         }
     }
 
